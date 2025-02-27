@@ -20,15 +20,26 @@ ProceduralProductions.append({
     'report': "bread1",
 })
 
-def cheese(memories):
+def cheddar(memories):
     memories['working_memory']['focusbuffer']['state'] = 'ham'
-    print(f"cheese executed. Updated working_memory: {memories['working_memory']}")
+    print(f"cheddar executed. Updated working_memory: {memories['working_memory']}")
 ProceduralProductions.append({
     'matches': {'working_memory': {'focusbuffer': {'state': 'cheese'}}},
     'negations': {},
     'utility': 10,
-    'action': cheese,
-    'report': "cheese",
+    'action': cheddar,
+    'report': "cheddar",
+})
+
+def goatcheese(memories):
+    memories['working_memory']['focusbuffer']['state'] = 'ham'
+    print(f"goat cheese executed. Updated working_memory: {memories['working_memory']}")
+ProceduralProductions.append({
+    'matches': {'working_memory': {'focusbuffer': {'state': 'cheese'}}},
+    'negations': {},
+    'utility': 10,
+    'action': goatcheese,
+    'report': "goat cheese",
 })
 
 def ham(memories):
@@ -69,5 +80,3 @@ ps = ProductionCycle()
 
 # Run the cycle with custom parameters
 ps.run_cycles(memories, AllProductionSystems, DelayResetValues, cycles=7, millisecpercycle=10)
-
-
