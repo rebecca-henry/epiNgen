@@ -54,7 +54,6 @@ def bread1(memories):
     # Update the focus for the next production.
     memories['working_memory']['focusbuffer']['state'] = 'cheese'
     print("bread1 production executed: focus updated to 'cheese'; motor action scheduled for bread1.")
-    return 4
 
 ProceduralProductions.append({
     'matches': {
@@ -79,7 +78,6 @@ def cheese(memories):
     })
     memories['working_memory']['focusbuffer']['state'] = 'ham'
     print("cheese production executed: focus updated to 'ham'; motor action scheduled for cheese.")
-    return 4
 
 ProceduralProductions.append({
     'matches': {
@@ -105,7 +103,6 @@ def ham(memories):
     })
     memories['working_memory']['focusbuffer']['state'] = 'bread2'
     print("ham production executed: focus updated to 'bread2'; motor action scheduled for ham.")
-    return 4
 
 ProceduralProductions.append({
     'matches': {
@@ -131,7 +128,6 @@ def bread2(memories):
     })
     memories['working_memory']['focusbuffer']['state'] = 'done'
     print("bread2 production executed: focus updated to 'done'; motor action scheduled for bread2.")
-    return 4
 
 ProceduralProductions.append({
     'matches': {
@@ -148,7 +144,6 @@ ProceduralProductions.append({
 
 def announce_sandwich(memories):
     print("Ham and cheese sandwich is ready!")
-    return 0
 
 ProceduralProductions.append({
     'matches': {
