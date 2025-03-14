@@ -21,14 +21,16 @@ working_memory = {
         'bread1': {'location': 'counter'},
         'cheese': {'location': 'counter'},
         'ham': {'location': 'counter'},
-        'bread2': {'location': 'counter'}},
+        'bread2': {'location': 'counter'},
+        'chips': {'location':'counter'}},
     'visual_command_buffer': {'state': 'scan'}  # Command to continuously scan the environment.
 }
 environment = {
     'bread1': {'location': 'counter'},
     'cheese': {'location': 'counter'},
     'ham': {'location': 'counter'},
-    'bread2': {'location': 'counter'}
+    'bread2': {'location': 'counter'},
+    'chips':{'location':'counter'}
 }
 memories = {
     'working_memory': working_memory,
@@ -116,7 +118,6 @@ ProceduralProductions.append({
     'report': "ham",
 })
 # -------------------------
-
 def bread2(memories):
     motorbuffer = memories['working_memory']['motor_buffer']
     motorbuffer.update({
@@ -126,8 +127,8 @@ def bread2(memories):
         'newslotvalue': 'plate',
         'delay': 4
     })
-    memories['working_memory']['focusbuffer']['state'] = 'done'
-    print("bread2 production executed: focus updated to 'done'; motor action scheduled for bread2.")
+    memories['working_memory']['focusbuffer']['state'] = 'chips'
+    print("bread2 production executed: focus updated to 'chips'; motor action scheduled for bread2.")
 
 ProceduralProductions.append({
     'matches': {
@@ -142,8 +143,33 @@ ProceduralProductions.append({
 })
 # -------------------------
 
+def chips(memories):
+    motorbuffer = memories['working_memory']['motor_buffer']
+    motorbuffer.update({
+        'state': 'do_action',
+        'env_object': 'chips',
+        'slot': 'location',
+        'newslotvalue': 'side plate',
+        'delay': 4
+    })
+    memories['working_memory']['focusbuffer']['state'] = 'done'
+    print("chips production executed: focus updated to 'done'; motor action scheduled for chips.")
+
+ProceduralProductions.append({
+    'matches': {
+        'working_memory': {'focusbuffer': {'state': 'chips'},
+        'visual_representation_buffer': {
+            'bread2': {'location': 'plate'},
+            'chips': {'location': 'counter'}}}},
+    'negations': {},
+    'utility': 10,
+    'action': chips,
+    'report': "chips",
+})
+# -------------------------
+
 def announce_sandwich(memories):
-    print("Ham and cheese sandwich is ready!")
+    print("Ham and cheese sandwich with side of chips is ready!")
 
 ProceduralProductions.append({
     'matches': {
@@ -248,4 +274,4 @@ AllProductionSystems = {
 # Initialize and Run the Production Cycle
 # -------------------------
 ps = ProductionCycle()
-ps.run_cycles(memories, AllProductionSystems, DelayResetValues, cycles=22, millisecpercycle=50)
+ps.run_cycles(memories, AllProductionSystems, DelayResetValues, cycles=30, millisecpercycle=50)
