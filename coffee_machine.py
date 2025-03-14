@@ -23,7 +23,7 @@ working_memory = {
         'cheese': {'location': 'counter'},
         'ham': {'location': 'counter'},
         'bread2': {'location': 'counter'},
-        'coffee_cup': {'status': 'empty'}},
+        'cup': {'status': 'empty'}},
    'visual_command_buffer': {'state': 'scan'}  # Command to continuously scan the environment.
 }
 environment = {
@@ -31,12 +31,13 @@ environment = {
     'cheese': {'location': 'counter'},
     'ham': {'location': 'counter'},
     'bread2': {'location': 'counter'},
-    'coffee_cup': {'status': 'empty'},
-    'coffee_switch': {'position': 'up'}
+    'cup': {'status': 'empty'},
+    'coffee_switch': {'position': 'up'},
+    'tea_switch': {'position': 'up'}
 }
 
 coffee_memory = {
-    'state': {'status': 'off'}} # a coffee machine keeps track of its state
+    'state': {'coffee_status': 'off', 'tea_status':'off'}} # a coffee machine keeps track of its state
 
 memories = {
     'working_memory': working_memory,
@@ -149,16 +150,17 @@ ProceduralProductions.append({
     'action': bread2,
     'report': "bread2",
 })
+
 # -------------------------
 
 def announce_sandwich(memories):
     print("Ham and cheese sandwich is ready!")
     memories['working_memory']['focusbuffer']['state'] = 'finished'
-    print('getting coffee')
+    print('getting tea')
     motorbuffer = memories['working_memory']['motor_buffer']
     motorbuffer.update({
         'state': 'do_action',
-        'env_object': 'coffee_switch',
+        'env_object': 'tea_switch',
         'slot': 'position',
         'newslotvalue': 'down',
         'delay': 3})
@@ -173,7 +175,6 @@ ProceduralProductions.append({
     'report': "announce_sandwich",
 })
 # -------------------------
-
 
 
 # -------------------------
@@ -245,20 +246,18 @@ VisualProductions.append({
 # -------------------------
 # Define coffee machine Productions (productions that run in the coffee machine)
 # -------------------------
-
-
-CoffeeMachiineProductions = []
+CoffeeMachineProductions = []
 
 def coffee(memories):
-    memories['coffee_memory']['state']['status'] = 'working'
-    print('coffee machine started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    memories['coffee_memory']['state']['coffee_status'] = 'working'
+    print('Machine started making coffee')
     return 4 #set action completion for X cycles later
 def coffee_poured(memories):
-    memories['environment']['coffee_cup']['status'] = 'full'
-    print('coffee cup is full $$$$$$$$$$$$$$$$$$$$')
-CoffeeMachiineProductions.append({
+    memories['environment']['cup']['status'] = 'full'
+    print('Cup is full of coffee')
+CoffeeMachineProductions.append({
     'matches': {'environment': {'coffee_switch': {'position': 'down'}},
-                'coffee_memory': {'state': {'status': 'off'}}},
+                'coffee_memory': {'state': {'coffee_status': 'off'}}},
     'negations': {},
     'utility': 10,
     'action': coffee,
@@ -266,7 +265,22 @@ CoffeeMachiineProductions.append({
     'report': "coffee",
 })
 
-
+def tea(memories):
+    memories['coffee_memory']['state']['tea_status'] = 'working'
+    print('Machine started making tea')
+    return 4 #set action completion for X cycles later
+def tea_poured(memories):
+    memories['environment']['cup']['status'] = 'full'
+    print('Cup is full of tea')
+CoffeeMachineProductions.append({
+    'matches': {'environment': {'tea_switch': {'position': 'down'}},
+                'coffee_memory': {'state': {'tea_status': 'off'}}},
+    'negations': {},
+    'utility': 10,
+    'action': tea,
+    'delayed_action': tea_poured,
+    'report': "tea",
+})
 
 
 # -------------------------
@@ -288,10 +302,9 @@ AllProductionSystems = {
     'ProductionSystem1': [ProceduralProductions, ProductionSystem1_Countdown],
     'ProductionSystem2': [MotorProductions, ProductionSystem2_Countdown],
     'ProductionSystem3': [VisualProductions, ProductionSystem3_Countdown],
-    'ProductionSystem4': [CoffeeMachiineProductions, ProductionSystem4_Countdown]
+    'ProductionSystem4': [CoffeeMachineProductions, ProductionSystem4_Countdown]
 
 }
-
 
 # -------------------------
 # Initialize and Run the Production Cycle
