@@ -12,18 +12,37 @@
 # this can be used to make quick models
 # and can also be used as a first step in building a detailed cognitive model
 
-
 from CMCed.production_cycle import ProductionCycle
+from CMCed.retrieve import *
 
 working_memory = {'focusbuffer': {'state': 'bread1'}}
 environment = {'bread1': {'location': 'counter'},
                 'cheese': {'location': 'counter'},
                 'ham': {'location': 'counter'},
-                'bread2': {'location': 'counter'}}
+                'bread2': {'location': 'counter'},
+                'chips' : {'location':'counter'}}
+
+declarative_memory = {'fries': {'name': 'fries',
+                                'condition': 'good',
+                                'side_order': 'yes',
+                                'utility':5},
+                      'house_salad': {'name': 'house_salad',
+                                      'condition': 'good',
+                                      'side_order': 'yes',
+                                      'utility':5},
+                      'poutine': {'name': 'poutine',
+                                  'condition': 'good',
+                                  'side_order': 'no'},
+                      'ceasar_salad': {'name': 'ceasar_salad',
+                                       'condition': 'good',
+                                       'side_order': 'yes',
+                                       'utility' : 5}
+                      }
 
 memories = {
     'working_memory': working_memory,
-    'environment': environment
+    'environment': environment,
+    'declaritive_memory' : declarative_memory
 }
 
 ProceduralProductions = []
@@ -84,7 +103,7 @@ ProceduralProductions.append({
 })
 
 def bread2(memories):
-    memories['working_memory']['focusbuffer']['state'] = 'done'
+    memories['working_memory']['focusbuffer']['state'] = 'chips'
     print(f"bread top executed. Updated working_memory: {memories['working_memory']}")
     print(f"{memories['environment']}")
     return 4 #set action completion for X cycles later
@@ -102,6 +121,47 @@ ProceduralProductions.append({
     'report': "bread2",
 })
 
+def chips(memories):
+    memories['working_memory']['focusbuffer']['state'] = 'sides'
+    print(f"Chips executed. Updated working_memory: {memories['working_memory']}")
+    print(f"{memories['environment']}")
+    return 4 #set action completion for X cycles later
+def chips_method(memories):
+    memories['environment']['chips']['location'] = 'side plate'
+    print(f"{memories['environment']}")
+ProceduralProductions.append({
+    'matches': {'working_memory': {'focusbuffer': {'state': 'chips'}},
+                'environment': {'bread2': {'location': 'plate'}, 'chips': {'location': 'counter'}}
+                },
+    'negations': {},
+    'utility': 10,
+    'action': chips,
+    'delayed_action': chips_method,
+    'report': "chips",
+})
+
+#-------
+def sides(memories):
+    memories['working_memory']['focusbuffer']['state'] = 'done'
+    print(f"I recall the side order was...")
+    return 4 #set action completion for X cycles later
+
+def sides_method(memories):
+    retrieved_chunk = retrieve_memory_chunk(declarative_memory, {'side_order': 'yes'}, {'condition': 'bad'}, 5)
+    print("...", retrieved_chunk['name'], "!")
+
+ProceduralProductions.append({
+    'matches': {'working_memory': {'focusbuffer': {'state': 'sides'}},
+                'environment': {'chips': {'location': 'side plate'}}
+                },
+    'negations': {},
+    'utility': 10,
+    'action': sides,
+    'delayed_action': sides_method,
+    'report': "sides",
+})
+#------
+
 # Production system delays in ticks
 ProductionSystem1_Countdown = 1
 
@@ -117,5 +177,5 @@ AllProductionSystems = {
 ps = ProductionCycle()
 
 # Run the cycle with custom parameters
-ps.run_cycles(memories, AllProductionSystems, DelayResetValues, cycles=20, millisecpercycle=50)
+ps.run_cycles(memories, AllProductionSystems, DelayResetValues, cycles=30, millisecpercycle=50)
 
