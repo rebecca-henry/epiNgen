@@ -1,3 +1,6 @@
+import random
+
+
 """
 these funcitons perform basic actions for the production cycle and the cognitive functions
 """
