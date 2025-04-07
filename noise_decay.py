@@ -30,6 +30,6 @@ print("\nDetailed Memory Report after Decay:")
 report_memory_contents(working_memory)
 
 # Retrieve the sandwich side with the highest (noisy and decayed) utility
-selected_side = retrieve_memory_chunk(working_memory, matches={})
+selected_side = retrieve_memory_chunk(working_memory, matches={'name':'salad'})
 print("\nSelected sandwich side (after noise addition and decay):")
 print(selected_side)

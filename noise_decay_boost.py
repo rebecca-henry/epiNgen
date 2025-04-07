@@ -31,8 +31,14 @@ print("\nDetailed Memory Report after Decay:")
 report_memory_contents(working_memory)
 
 # Raise the utility of a specific chunk (e.g., 'salad') after noise and decay
-print("\nRaising the utility of 'salad' by 5...")
-utility_change(memories, 'working_memory_dictionary', 'salad', amount=5)
+print("\nRaising the utility of 'chips' by 5...") # changed salad to chips and 5 to 7
+utility_change(memories, 'working_memory_dictionary', 'chips', amount=5) # changed salad to fries and amount 5 to 7
+
+# Drop the utility of the other chunks
+print("\Dropping the utility of 'fries' by 3...") 
+utility_change(memories, 'working_memory_dictionary', 'fries', amount=-3)
+print("\Dropping the utility of 'salad' by 4...") 
+utility_change(memories, 'working_memory_dictionary', 'salad', amount=-4) 
 
 # Display memory contents after the utility change to see the updated utilities
 print("\nDetailed Memory Report after Utility Change:")
