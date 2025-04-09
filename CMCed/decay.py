@@ -30,8 +30,10 @@ def decay_all_memory_chunks(memories, memory_store, decay_amount):
                 current_utility = chunk_data.get('utility', 0)
                 new_utility = max(0, current_utility - decay_amount)  # Ensure utility doesn't go below zero
                 memories[memory_store][chunk_name]['utility'] = new_utility
-                print(f"Decayed utility of {chunk_name} in {memory_store} to {new_utility}")
+                #print(f"Decayed utility of {chunk_name} in {memory_store} to {new_utility}")
             else:
-                print(f"Chunk {chunk_name} in {memory_store} has no utility value.")
+                #print(f"Chunk {chunk_name} in {memory_store} has no utility value.")
+                pass
     else:
-        print(f"Memory store {memory_store} not found in memories.")
+        #print(f"Memory store {memory_store} not found in memories.")
+        pass
