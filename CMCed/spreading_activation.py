@@ -22,9 +22,11 @@ def spreading_activation_boost(memories, memory_store, source_chunk, boost_facto
     memory = memories[memory_store]
     source_values = set(source_chunk.values())  # Extract values from the source chunk
 
-    print(f"[DEBUG] Source chunk values for spreading activation: {source_values}")
+    print(f" Source chunk values for spreading activation: {source_values}")
 
     for chunk_name, chunk_data in memory.items():
+        if 'utility' not in chunk_data:
+            continue
         chunk_values = set(chunk_data.values())  # Extract values from the target chunk
         match_score = len(source_values & chunk_values)  # Count intersecting values
         utility_boost = match_score * boost_factor
@@ -32,5 +34,5 @@ def spreading_activation_boost(memories, memory_store, source_chunk, boost_facto
         # Apply the utility boost
         chunk_data['utility'] += utility_boost
 
-        print(f"[DEBUG] Chunk '{chunk_name}': Match score = {match_score}, Utility boost = {utility_boost}")
-        print(f"[DEBUG] Updated utility for chunk '{chunk_name}': {chunk_data['utility']}")
+        print(f" Chunk '{chunk_name}': Match score = {match_score}, Utility boost = {utility_boost}")
+        print(f" Updated utility for chunk '{chunk_name}': {chunk_data['utility']}")

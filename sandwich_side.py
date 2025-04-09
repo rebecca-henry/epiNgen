@@ -1,5 +1,6 @@
 from CMCed.production_cycle import ProductionCycle
 from CMCed.retrieve import *
+from CMCed.retrieve_partial import *
 
 
 working_memory = {'focusbuffer': {'state': 'bread1'},
@@ -8,17 +9,19 @@ working_memory = {'focusbuffer': {'state': 'bread1'},
 declarative_memory = {'fries': {'name': 'fries',
                                 'condition': 'good',
                                 'side_order': 'yes',
-                                'utility':5},
+                                'utility':1},
                       'house_salad': {'name': 'house_salad',
-                                      'condition': 'bad',
+                                      'condition': 'good',
                                       'side_order': 'no',
-                                      'utility':6},
+                                      'utility':1},
                       'poutine': {'name': 'poutine',
                                   'condition': 'good',
-                                  'side_order': 'no'},
+                                  'side_order': 'yes',
+                                  'utility':5},
                       'ceasar_salad': {'name': 'ceasar_salad',
-                                       'condition': 'good',
-                                       'side_order': 'no'}
+                                       'condition': 'bad',
+                                       'side_order': 'no',
+                                       'utility':10},
                       }
 
 memories = {
@@ -76,12 +79,13 @@ def announce_sandwich(memories):
     print("Ham and cheese sandwich is ready!")
 # retrieval conditions
     memory = declarative_memory
-    matches = {'side_order': 'yes'}
+    matches = {'side_order': 'yes','condition': 'good'}
     negations = {'condition': 'bad'}
-    utility_threshold = 5
+    utility_threshold = 0
 # retrieve the best match
 #    retrieved_chunk = retrieve_memory_chunk(memory, matches, negations, utility_threshold)
-    retrieved_chunk = retrieve_memory_chunk(memory, matches)
+    retrieved_chunk = retrieve_memory_chunk_partial(memory, matches, negations={}, utility_threshold=0)
+
 
     print('I recall the side order was.........................................***************************')
     print(retrieved_chunk['name'])
