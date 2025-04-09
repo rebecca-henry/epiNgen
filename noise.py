@@ -5,9 +5,9 @@ from CMCed.debugging import report_memory_contents
 
 # Define a memory store for sandwich sides with initial utilities
 working_memory = {
-    'fries': {'name': 'fries', 'utility': 9, 'taste': 'salty'},
-    'salad': {'name': 'salad', 'utility': 4, 'taste': 'fresh'},
-    'chips': {'name': 'chips', 'utility': 6, 'taste': 'crispy'}
+    'fries': {'name': 'fries', 'utility': 10, 'taste': 'salty'},
+    'salad': {'name': 'salad', 'utility': 1, 'taste': 'fresh'},
+    'chips': {'name': 'chips', 'utility': 1, 'taste': 'crispy'}
 }
 
 # Add noise to each chunk's utility to simulate variability

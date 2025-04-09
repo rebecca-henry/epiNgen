@@ -5,9 +5,9 @@ from CMCed.decay import decay_all_memory_chunks
 
 # Define a memory store for sandwich working_memory with initial utilities
 working_memory = {
-    'fries': {'name': 'fries', 'utility': 10, 'taste': 'salty'},
-    'salad': {'name': 'salad', 'utility': 5, 'taste': 'fresh'},
-    'chips': {'name': 'chips', 'utility': 7, 'taste': 'crispy'}
+    'fries': {'name': 'fries', 'utility': 1, 'taste': 'salty'},
+    'salad': {'name': 'salad', 'utility': 10, 'taste': 'fresh'},
+    'chips': {'name': 'chips', 'utility': 1, 'taste': 'crispy'}
 }
 
 # Wrap the working_memory in a dictionary as decay_all_memory_chunks expects a collection of stores
